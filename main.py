@@ -9,7 +9,7 @@ class MainApp(Tk):
         self.title("Calculadora")#nuestra inicialización propia de nuestra instancia
         self.geometry("272x300")#nuestra inicialización propia de nuestra instancia
         self.pack_propagate(0)#para que los contenidos se adecuen a la ventana y no al revés
-        
+
         c = calculator.Controlator(self)#self es el padre de calculator que es la ventana principal (MainApp(Tk))
         c.pack(side=TOP, fill = BOTH)
 
@@ -20,8 +20,8 @@ class MainApp(Tk):
 
 
 if __name__=="__main__":
-    app = MainApp
-    app.start
+    app = MainApp()
+    app.start()
 
 
 
