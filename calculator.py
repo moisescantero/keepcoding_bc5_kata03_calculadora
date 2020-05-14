@@ -118,15 +118,19 @@ class Controlator(ttk.Frame):
 
     def to_float(self, valor):
         return float(valor.replace(",","."))
+        
+    def to_str(self, valor):
+        return str(valor.replace(".",","))     
+    
 
     def calculate(self):
         if self.operation == "+":
             return self.op1 + self.op2
         elif self.operation == "-":
             return self.op1 - self.op2
-        elif self.operation == "*":
+        elif self.operation == "x":
             return self.op1 * self.op2
-        elif self.operation == "/":
+        elif self.operation == "÷":
             return self.op1 / self.op2
         else:
             return self.op2
@@ -150,7 +154,7 @@ class Controlator(ttk.Frame):
         if algo == "," and "," not in self.dispValue:
             self.dispValue += str(algo)
         
-        if algo == "+":
+        if algo == "+" or algo == "-" or algo == "x" or algo == "÷":
             self.op1 = self.to_float(self.dispValue)
             self.operation = algo
             self.dispValue = "0"
@@ -158,9 +162,9 @@ class Controlator(ttk.Frame):
         if algo == "=":
             self.op2 = self.to_float(self.dispValue)
             res = self.calculate()
-            self.dispValue = str(res)
+            self.dispValue = self.to_str(str(res))
             
-
+    
         self.display.paint(self.dispValue)
 
 class Display(ttk.Frame):
