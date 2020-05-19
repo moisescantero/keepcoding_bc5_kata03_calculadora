@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-dbuttons = [
+normal_buttons = [
     {
         "text": "1",
         "col": 0,
@@ -95,6 +95,78 @@ dbuttons = [
         "row": 5
     }
 ]
+
+roman_buttons = [
+    {
+        "text": "=",
+        "col": 0,
+        "row": 5,
+        "W": 4
+    },
+    {
+        "text": "I",
+        "col": 0,
+        "row": 4,
+    },
+    {
+        "text": "V",
+        "col": 1,
+        "row": 4,
+    },
+    {
+        "text": "X",
+        "col": 0,
+        "row": 3,
+    },
+    {
+        "text": "L",
+        "col": 1,
+        "row": 3,
+    },
+    {
+        "text": "C",
+        "col": 0,
+        "row": 2,
+    },
+    {
+        "text": "D",
+        "col": 1,
+        "row": 2,
+    },
+    {
+        "text": "M",
+        "col": 2,
+        "row": 2,
+        "H": 3
+    },
+    {
+        "text": "AC",
+        "col": 1,
+        "row": 1,
+        "W": 2
+    },
+    {
+        "text": "÷",
+        "col": 3,
+        "row": 1,
+    },
+    {
+        "text": "x",
+        "col": 3,
+        "row": 2,
+    },
+    {
+        "text": "-",
+        "col": 3,
+        "row": 3,
+    },
+    {
+        "text": "+",
+        "col": 3,
+        "row": 4,
+    }
+]
+
 
 def pinta(valor):
     print(valor)
@@ -228,6 +300,19 @@ class Selector(ttk.Frame):
     def click(self):
         self.status = self.__value.get()
 
+class Keyboard(ttk.Frame):
+    def __init__(self, parent, status= "N"):
+        ttk.Frame.__init__(self, parent, height= 250, width= 272)
+        self.status = status
+
+        if status == "N":
+            dbuttons = normal_buttons
+        else:
+            dbuttons = roman_buttons
+
+        for properties in dbuttons:
+            btn = CalcButton(self, properties["text"], None, properties.get("W", 1), properties.get("H", 1))
+            btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W", 1), rowspan=properties.get("H", 1))
 
 class CalcButton(ttk.Frame):
     def __init__(self, parent, value, command, width=1, height=1):
