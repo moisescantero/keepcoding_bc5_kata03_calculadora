@@ -24,16 +24,21 @@ class TestSelector(tkinterTestCase.TkTestCase):
         self.assertEqual(children["rbtn_normal"].config()["text"][4], "N")
         self.assertTrue(isinstance(children["rbtn_romano"], ttk.Radiobutton))#este y el de abajo son iguales
         self.assertIsInstance(children["rbtn_normal"], ttk.Radiobutton)#este y el de arriba son iguales
-        self.assertTrue(children["rbtn_romano"].winfo_y, 30)
-        self.assertTrue(children["rbtn_normal"].winfo_y, 5)
+        self.assertTrue(children["rbtn_romano"].winfo_viewable(), 1)
+        self.assertTrue(children["rbtn_normal"].winfo_viewable(), 1)
     
     def test_init_value_R(self):
         r_selector = calculator.Selector(self.root, "R")
         self.assertEqual(r_selector.status, "R")
+        r_selector.update()
+        r_selector.destroy()
     
     def test_click_change__status(self):
         rbtn_romano = self.s.children["rbtn_romano"]
-        rbtn_romano.event_generate("<Button-1>")
+        self.assertEqual(self.s.status, "N")
+        self.assertEqual(self.s._Selector__value.get(), "N")#obtenemos valores de las variables de control usando get()
+        rbtn_romano.invoke()
+        self.assertEqual(self.s._Selector__value.get(), "R")#con nombre de la clase _Selector__value accedemos a los métodos privados
         self.assertEqual(self.s.status, "R")
 
 if __name__=="__main__":

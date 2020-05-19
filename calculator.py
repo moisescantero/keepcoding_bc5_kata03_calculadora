@@ -215,14 +215,19 @@ class Selector(ttk.Frame):
     def __init__(self, parent, status="N"):
         ttk.Frame.__init__(self, parent, width=68, height=50)
         self.status = status
+        self.__value = StringVar()#variable de control que es un tipo de instancia/objeto de tkinter
+        self.__value.set(self.status)#asignamos valores a las variables de control usando set()
         
 
-        radiob1 = ttk.Radiobutton(self, text= "N", value= "N", name= "rbtn_normal", variable= self.status)
+        radiob1 = ttk.Radiobutton(self, text= "N", value= "N", name= "rbtn_normal", variable= self.__value, command= self.click)
         radiob1.place(x=0, y=5)
         
-        radiob2 = ttk.Radiobutton(self, text= "R", value= "R", name= "rbtn_romano", variable= self.status)
+        radiob2 = ttk.Radiobutton(self, text= "R", value= "R", name= "rbtn_romano", variable= self.__value, command= self.click)
         radiob2.place(x=0, y=30)
         
+    def click(self):
+        self.status = self.__value.get()
+
 
 class CalcButton(ttk.Frame):
     def __init__(self, parent, value, command, width=1, height=1):
