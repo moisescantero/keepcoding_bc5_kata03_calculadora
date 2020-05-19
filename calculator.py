@@ -176,12 +176,13 @@ class Controlator(ttk.Frame):
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent, width= 272, height= 300)
         self.reset()
-        self.display = Display(self)
-        self.display.grid(column=0, row=0, columnspan=4)
 
-        for properties in dbuttons:
-            btn = CalcButton(self, properties["text"], self.set_operation, properties.get("W", 1), properties.get("H", 1))
-            btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W", 1), rowspan=properties.get("H", 1))
+        self.display = Display(self)
+        self.display.grid(column=0, row=0)
+
+        self.keyboard = Keyboard(self)
+        self.keyboard.grid(column= 0, row= 1)
+
 
     def reset(self):
         self.op1 = None
@@ -303,16 +304,53 @@ class Selector(ttk.Frame):
 class Keyboard(ttk.Frame):
     def __init__(self, parent, status= "N"):
         ttk.Frame.__init__(self, parent, height= 250, width= 272)
-        self.status = status
+        self.__status = status
+        self.lista_Bromanos = []
+        self.lista_Bnormales = []
 
-        if status == "N":
-            dbuttons = normal_buttons
+        if self.__status == "N":
+            self.pinta_normal()
         else:
-            dbuttons = roman_buttons
+            self.pinta_romano()
 
-        for properties in dbuttons:
-            btn = CalcButton(self, properties["text"], None, properties.get("W", 1), properties.get("H", 1))
-            btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W", 1), rowspan=properties.get("H", 1))
+    @property#ya no harían falta paréntesis
+    def status(self):#getter/consultar
+        return self.__status
+
+    @status.setter#poniendo solo status podremos cambiar la variable
+    def status(self, valor):#setter
+        self.__status = valor
+        if valor == "N":
+            self.pinta_normal()
+        else:
+            self.pinta_romano()
+
+    def pinta_normal(self):
+        if len(self.lista_Bnormales)== 0:
+            for properties in normal_buttons:
+                btn = CalcButton(self, properties["text"], None, properties.get("W", 1), properties.get("H", 1))
+                self.lista_Bnormales.append((btn, properties))
+                btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W", 1), rowspan=properties.get("H", 1))
+        else:
+            for btn, properties in self.lista_Bnormales:
+                btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W", 1), rowspan=properties.get("H", 1))
+
+        for borra, properties in self.lista_Bromanos:
+            borra.grid_forget()
+
+
+    def pinta_romano(self):
+        if len(self.lista_Bnormales)== 0:
+            for properties in roman_buttons:
+                btn = CalcButton(self, properties["text"], None, properties.get("W", 1), properties.get("H", 1))
+                self.lista_Bromanos.append((btn, properties))
+                btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W", 1), rowspan=properties.get("H", 1))
+        else:
+            for btn, properties in self.lista_Bromanos:
+                btn.grid(column=properties["col"], row=properties["row"], columnspan=properties.get("W", 1), rowspan=properties.get("H", 1))
+
+        for borra, properties in self.lista_Bnormales:
+            borra.grid_forget()
 
 class CalcButton(ttk.Frame):
     def __init__(self, parent, value, command, width=1, height=1):
